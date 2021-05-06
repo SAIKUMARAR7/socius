@@ -1,0 +1,43 @@
+{% load widget_tweaks %}
+{% load static%}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>Profile</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
+  <!--link rel="stylesheet" type="text/css" href="{% static 'CSS/divbg.css' %}"-->
+
+<style>
+    .container {
+        background-color:rgb(230, 243, 241);
+      }
+      .center {
+          margin: auto;
+          width: 40%;
+          padding: 10px;
+        }
+
+</style>
+</head>
+<body>
+<div class="center">
+<div class="container">
+    <form action="" class="form-horizontal" role="form" method="post">
+    {% csrf_token %}
+    {{ form.as_p }} 
+        
+    <center><button type="submit">Save</button></center>
+   </form>
+</div>
+</div>
+{% if messages %}
+          <ul class="messages">
+              {% for message in messages %}
+              <h3> {{message}} </h3>
+              {% endfor %}
+          </ul>
+{% endif %}
+</body>
+</html>

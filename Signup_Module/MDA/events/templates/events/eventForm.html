@@ -1,0 +1,100 @@
+{% extends "socius/base.html" %}
+{% load crispy_forms_tags %}
+{% load static %}
+{% block navbar %}
+  <div class="sidebar-wrapper">
+        <ul class="nav">
+          <li class="nav-item ">
+            <a class="nav-link" href="/loggedin.html">
+              <i class="material-icons">dashboard</i>
+              <p>Dashboard</p>
+            </a>
+          </li>
+          <li class="nav-item ">
+            <a class="nav-link" href="./user.html">
+              <i class="material-icons">person</i>
+              <p>User Profile</p>
+            </a>
+          </li>
+          
+          <li class="nav-item ">
+            <a class="nav-link" href="{% url 'create' %}">
+              <i class="material-icons">create_new_folder</i>
+              <p>Create Directory</p>
+            </a>
+          </li>
+          <li class="nav-item ">
+            <a class="nav-link" href="{% url 'exam' %}">
+              <i class="material-icons">create_new_folder</i>
+              <p>Create Exam</p>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="{% url 'SuCoupon' %}">
+              <i class="material-icons">bubble_chart</i>
+              <p>Manage Coupons</p>
+            </a>
+          </li>
+          
+
+         
+          
+          <li class="nav-item active">
+            <a class="nav-link" href="{% url 'createEvent' %}">
+              <i class="material-icons">today</i>
+              <p>Events</p>
+            </a>
+          </li>
+          
+        </ul>
+      </div>
+    </div>
+    <div class="main-panel">
+      <!-- Navbar -->
+      <nav class="navbar navbar-expand-lg navbar-transparent navbar-absolute fixed-top ">
+        <div class="container-fluid">
+          <div class="navbar-wrapper">
+            <a class="navbar-brand" href="{% url 'createEvent' %}">Create Events</a>
+          </div>
+{% endblock navbar %}
+
+{% block content %}
+<div class="container-fluid">
+    <div class="row">
+      <div class="col-md-8">
+        <div class="card">
+          <div class="card-header card-header-primary">
+            <h4 class="card-title">Event</h4>
+            <p class="card-category">{{ user.get_username }}</p>
+          </div>
+          <div class="card-body">
+            <form method="POST">
+              {% csrf_token %}
+              <div class="row">
+                <div class="column col-md-4 mb-0">
+                <br/>{{ event_form.event_title|as_crispy_field }}
+                <br/>
+                {{ event_form.event_description|as_crispy_field }}
+                </div>
+                <div class="column col-md-4 mb-0" style="float: right; left: 110px">
+                    <br/>{{ event_form.event_date|as_crispy_field }}
+                    <br><br>
+                    {{ event_form.event_location|as_crispy_field }}
+
+                    <!-- <input type="hidden" id="Name" name="Name" value="{{ user.get_username }}" readonly><br> -->
+                </div>
+                
+            </div>
+            
+            <button class="btn btn-primary" type="submit">Save</button>
+            </form>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <button class="btn btn-primary btn-round" onclick="location.href='{% url 'eventTable' %}'"><i class="material-icons">table_view</i> View Events</button>
+      </div>
+    </div>
+  </div>
+    
+{% endblock content %}

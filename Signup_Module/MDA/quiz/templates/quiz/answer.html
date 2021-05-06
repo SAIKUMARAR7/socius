@@ -1,0 +1,40 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+<head>
+	<!--<link rel="shortcut icon" href="{% static 'img/favicon.ico' %}" type="image/x-icon">-->
+	<title>Quiz Application</title>
+	<!--<link rel = "stylesheet" href = "{% static 'css/quiz.css' %}">-->
+	<script src = "{% static 'js/quiz.js' %}"></script>
+</head>
+<body>
+	<div id = "container">
+		<header>
+			<a href="/" class = "button">Go Back</a> 
+			<h1>Objective test Question</h1>
+		</header>
+
+		<section>
+			<div id = "results"></div>
+			<form name = "quizForm" onsubmit = "return submitAnswers(answers = [{% for q in questions %}'{{ q.answer }}',{% endfor %}])">
+			{% for q in questions %}
+				<h3> {{ q.id }}.  {{ q.question }}</h3>
+                <h3>a. {{ q.option1 }}</h3>
+                <h3>b. {{ q.option2 }}</h3>
+                <h3>c. {{ q.option3 }}</h3>
+                <h3>d. {{ q.option4 }}</h3>
+				<h3>answer. {{ q.answer }}</h3>
+			
+			{% endfor %}
+
+				<br><br>
+				
+			</form>
+			<br><br>
+		
+		</section>
+		
+	</div>
+
+</body>
+</html>

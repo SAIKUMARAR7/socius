@@ -1,0 +1,11 @@
+<html>
+    <center>
+        <form method="POST" action="done" enctype="multipart/form-data">
+        {% csrf_token %}
+        enter quiz name<input type="text" name="name">
+        enter DirectoryId<input type="text" name="DirectoryId">
+        select QuestionPaper <input type="file" name="file">
+        <button type="submit" name="submi">submit</button>
+        </form>
+    </center>
+</html>

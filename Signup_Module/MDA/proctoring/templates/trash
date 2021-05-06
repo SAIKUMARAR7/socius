@@ -1,0 +1,95 @@
+function savePhoto() {
+              var data = canvas.toDataURL();
+              //var title = $("#title").val();
+  
+              $.ajax({
+                  type: "POST",
+                  url: "{% url 'attendance:valiadate_user' %}",
+                  data: {
+                      photo: data,
+                      
+                  },
+                  success: function (response) {
+                    alert("Thankyou for reaching us out " + response.name);
+                },
+                // on error
+                error: function (response) {
+                    // alert the error if any error occured
+                    alert(response.responseJSON.errors);
+                    console.log(response.responseJSON.errors)
+                }
+              }).done(function (o) {
+                  alert("Photo Saved Successfully!");
+              });
+
+
+
+
+              video{
+            display: none;
+            
+          }
+          #vid-take{
+            display: none;
+          }
+          #snap{
+            display: none;
+          }
+
+
+
+function viddown () {
+                // (A) CREATE SNAPSHOT FROM VIDEO
+                var video = document.getElementById("vid-live"),
+                    canvas = document.createElement("canvas"),
+                    context2D = canvas.getContext("2d");
+                canvas.width = 120;
+                canvas.height = 120;
+                context2D.drawImage(video, 0, 0, 1020,780);
+             
+              
+                // (B) CREATE DOWNLOAD LINK
+                var wrap = document.getElementById("vid-result"),
+                    anchor = document.createElement("a");
+                anchor.href = canvas.toDataURL("image/png");
+                anchor.download = "webcam.png";
+                anchor.innerHTML = "Click to download";
+                wrap.innerHTML = "";
+                wrap.appendChild(anchor);
+
+
+              
+                // (C) AUTOMATIC DOWNLOAD - MAY NOT WORK ON SOME BROWSERS
+                // anchor.click();
+              }
+
+def uploadQuestion(request):
+    return render(request,"uploadquestion.html")
+
+
+def question_paper_progress(request):
+    if request.method == "POST":
+        file = request.FILES["questionpaper"]
+        #f = open(file, "r")
+        content = file.readlines()
+        print(content)
+        return HttpResponse(content)
+
+
+
+
+
+ let sitetitle = document.title;
+              window.addEventListener('blur',()=>{
+                 msg= confirm("Don't Switch taps");
+                 if(msg == "True") 
+                {
+                  window.location.href = "http://127.0.0.1:8000/proctoring/submission"
+                }
+                else{
+                  window.location.href = "http://127.0.0.1:8000/proctoring/submission"
+                }
+              });
+              window.addEventListener('focus',()=>{
+                document.title = sitetitle;
+              });

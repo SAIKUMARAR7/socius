@@ -1,0 +1,107 @@
+{% extends "socius/base.html" %}
+{% load crispy_forms_tags %}
+{% load static %}
+{% block navbar %}
+  <div class="sidebar-wrapper">
+        <ul class="nav">
+          <li class="nav-item ">
+            <a class="nav-link" href="/loggedin.html">
+              <i class="material-icons">dashboard</i>
+              <p>Dashboard</p>
+            </a>
+          </li>
+          <li class="nav-item ">
+            <a class="nav-link" href="./user.html">
+              <i class="material-icons">person</i>
+              <p>User Profile</p>
+            </a>
+          </li>
+          
+          <li class="nav-item ">
+            <a class="nav-link" href="{% url 'create' %}">
+              <i class="material-icons">create_new_folder</i>
+              <p>Create Directory</p>
+            </a>
+          </li>
+          <li class="nav-item ">
+            <a class="nav-link" href="{% url 'exam' %}">
+              <i class="material-icons">create_new_folder</i>
+              <p>Create Exam</p>
+            </a>
+          </li>
+          <li class="nav-item ">
+            <a class="nav-link" href="{% url 'SuCoupon' %}">
+              <i class="material-icons">bubble_chart</i>
+              <p>Manage Coupons</p>
+            </a>
+          </li>
+          
+          
+          <li class="nav-item active">
+            <a class="nav-link" href="{% url 'createEvent' %}">
+              <i class="material-icons">today</i>
+              <p>Events</p>
+            </a>
+          </li>
+          
+        </ul>
+      </div>
+    </div>
+    <div class="main-panel">
+      <!-- Navbar -->
+      <nav class="navbar navbar-expand-lg navbar-transparent navbar-absolute fixed-top ">
+        <div class="container-fluid">
+          <div class="navbar-wrapper">
+            <a class="navbar-brand" href="{% url 'createEvent' %}">Create Events</a>
+          </div>
+          <div class="content">
+            <div class="container-fluid">
+              <div class="row">
+                <br><button class="btn btn-primary btn-round" onclick="location.href='{% url 'createEvent' %}'">Back</button>
+              </div>
+            </div>
+          </div>
+{% endblock navbar %}
+
+{% block content %}
+  <div class="container-fluid">
+          <div class="row">
+                        <div class="col-md-12">
+              <div class="card card-plain">
+                <div class="card-header card-header-primary">
+                  <h4 class="card-title mt-0">Events Created</h4>
+                  <!-- <p class="card-category"> Here is a subtitle for this table</p> -->
+                </div>
+                <div class="card-body">
+                  <div class="table-responsive">
+                    <table class="table table-hover">
+                      <tr>                      
+                        <th>Event Title</th>
+                        <th>Event Description</th>
+                        <th>Event Date</th>
+                        <th>Event location</th>
+                        <!-- <th>Created On</th>
+                        <th>Valid From</th>
+                        <th>Valid Till</th> -->
+                      </tr>
+                    {% for event in events%}
+                      <tr>
+
+                          <td>{{ event.event_title }}</td>
+                          <td>{{ event.event_description }}</td>
+                          <td>{{ event.event_date }}</td>
+                          <td>{{ event.event_location }}</td>
+                          <!-- <td>{{ coupon.valid_from }}</td>
+                          <td>{{ coupon.valid_till }}</td> -->
+                      </tr>    
+                    {% endfor %}
+         </tr>
+                        
+                    </table>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>  
+        </div>
+{% endblock content %}

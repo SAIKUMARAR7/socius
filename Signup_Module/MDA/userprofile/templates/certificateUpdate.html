@@ -1,0 +1,68 @@
+{{% extends "base.html" %}
+{% load crispy_forms_tags %}
+{% load static %}
+{% block content %}
+<div class="content">
+	<div class="container-fluid">
+    <a href="http://127.0.0.1:8000/user.html"> <button class="btn btn-primary"> Back</button></a>
+	  <div class="row">
+		<div class="col-md-8">
+		  <div class="card">
+			<div class="card-header card-header-primary">
+			  <h4 class="card-title">Edit Certificate</h4>
+			</div>
+			<div class="card-body">
+			  <form method="POST">
+				{% csrf_token %}
+				<div class="row">
+                    <div class="col-md-6">
+                      <div class="form-group">
+                        {{ form.name|as_crispy_field}}
+                      </div>
+                    </div>
+                    <div class="col-md-6">
+                      <div class="form-group">
+                        {{ form.issuingOrg|as_crispy_field}}
+                      </div>
+                    </div>
+                  </div>
+                  <div class="row">
+                      <div class="col-md-6">
+                        <div class="form-group">
+                          {{ form.issuedDate|as_crispy_field}}
+                        </div>
+                      </div>
+                      <div class="col-md-6">
+                        <div class="form-group">
+                          {{ form.expiryDate|as_crispy_field }}
+                        </div>
+                      </div>
+                  </div>
+                  <div class="row">
+                      <div class="col-md-6">
+                        <div class="form-group">
+                          {{ form.credentialId|as_crispy_field }}
+                        </div>
+                      </div>
+                      <div class="col-md-6">
+                        <div class="form-group">
+                          {{ form.credentialUrl|as_crispy_field }}
+                        </div>
+                      </div>
+                  </div>   
+                  <div class="row">
+                      <div class="col-md-12">
+                        <div class="form-group">
+                          <div class="form-group">
+                            {{ form.description|as_crispy_field  }}
+                          </div>
+                        </div>
+                      </div>
+                  </div>
+				<button class="btn btn-primary" type="submit" value="Update">Update</button>
+				<div class="clearfix"></div>
+			  </form>
+			</div>
+		  </div>
+		</div>
+{% endblock%}

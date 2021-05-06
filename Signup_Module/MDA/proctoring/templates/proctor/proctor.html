@@ -1,0 +1,335 @@
+
+{% load static %}
+<!DOCTYPE html>
+
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <title>Proctoring</title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" href="{%static 'css/main2.css'%}">
+        <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+<!--        <script src = "{% static 'js/quiz.js' %}"></script>-->
+        <style>
+          #vid-live{
+            display: none;
+          }
+          #vid-take{
+            display: none;
+          }
+          #Warning{
+            float: right;
+            color: red;
+            padding-left: 10px;
+            text-decoration: solid;
+
+          }
+          #vid-result{
+            display: none;
+          }
+          a{
+            text-decoration: none;
+          }
+          #final-button{
+            
+            color: springgreen;
+            margin-bottom: 10px;
+            padding-left: 10px;
+          }
+          .operation{
+            display: none;
+            
+          }
+          #choice{
+            
+            padding: 8px;
+
+          }
+          .option{
+            padding: 4px;
+          }
+          #countdown{
+            font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+            float: right;
+            font-size: 30px;
+          }
+          #operationID{
+            padding-left: 155px;
+            padding-right: 145px;
+          }
+          #scorefield{
+            display: none;
+          }
+        </style>
+    </head>
+    <body>
+        <video id="vid-live" autoplay></video>
+ 
+
+        <div>
+          <form>
+              {% csrf_token %} 
+              <input id="vid-take" type="button" value="Snapshot"/>
+              <input type="hidden" name='captured-image' id='cimg' height="180" width="180"/>
+              
+              <br>
+              
+
+          </form>
+        
+        
+        <div id="Warning"></div>
+      </div>
+      
+
+      <div class="proctorpopup" id="ProctorInstuction">
+        <div class="formPopup" id="popupForm">
+          
+           <center>
+            <h2>Exam is going to start</h2>
+            <p>Questions:1</p>
+            <p>Difficulty : Easy</p>
+           
+              
+         
+           
+            <button class="btn" onclick="openFullscreen();">Begin</button>
+          </center>
+          
+        </div>
+      </div>
+      
+      <div id="vid-result" width="180" height="180"></div>
+      
+      <div class="operation" id="operationID">
+        
+        <p id="countdown">60:00</p>
+        <section>
+          <div id = "results"></div>
+          <!-- <form name = "quizForm" action="#" onsubmit = " return submitAnswers(answers = [{% for q in questions %}'{{ q.answer }}',{% endfor %}])"> -->
+            <form name = "quizForm" action="#" > 
+            {% csrf_token %}
+          {% for q in questions %}
+            <h3> {{ q.qno }}.  {{ q.question }}</h3>
+            <input type = "radio" name = "q{{ q.qno }}" value = "{{ q.option1 }}" id = "q1a">   {{ q.option1 }}<br><br>
+            <input type = "radio" name = "q{{ q.qno }}" value = "{{ q.option2 }}" id = "q1b">   {{ q.option2 }}<br><br>       
+            <input type = "radio" name = "q{{ q.qno }}" value = "{{ q.option3 }}" id = "q1c">   {{ q.option3 }}<br><br>
+            <input type = "radio" name = "q{{ q.qno }}" value = "{{ q.option4 }}" id = "q1d">   {{ q.option4 }}<br><br>
+    
+          
+          {% endfor %}
+    
+            <br><br>
+           <!-- <input type = "submit" value = "Submit Answer"> -->
+           <button type="submit" onclick="return submitAnswers(answers = [{% for q in questions %}'{{ q.answer }}',{% endfor %}])"><a href="#">Submit answer</a></button>
+          </form>
+          <br><br>
+        <!--<a href="/questions" class="button">Reset</a>-->
+        <br>
+        </section>
+        <form id="score" action="/proctoring/submission" method="post" >
+          {% csrf_token %}
+        <!-- <button id="final-button" type="submit"><a href="/proctoring/submission">submit</a></button> -->
+          <input type="hidden" value="{{ Quizname }}" name="Quizname">
+          <input type="text" name='score' id="scorefield">
+          <input type="submit" value='Finsh test'>
+      </form>
+         
+         
+      </div> 
+        
+     
+        
+      
+        <script>
+      
+
+          var req = null;
+          var a;
+            window.addEventListener("load", function(){
+                // (A) ASK FOR USER PERMISSION TO ACCESS CAMERA
+                
+                navigator.mediaDevices.getUserMedia({
+                 
+                  video: {
+                    width: { min: 252, ideal: 780, max: 420 },
+                    height: { min: 250, ideal: 720, max: 280 }
+                  }
+                  
+                
+                })
+              
+                // (B) ON GETTING CAMERA ACCESS
+                .then(function(stream) {
+                  // (B1) STREAM WEBCAM TO VIDEO TAG
+                  var video = document.getElementById("vid-live");
+                  video.srcObject = stream;
+                  video.play();
+              
+                  // (B2) ENABLE DEMO BUTTONS
+                  
+                  //var snapbutton = document.getElementById('vid-take')
+                  //snapbutton.click()
+                  document.getElementById("vid-take").onclick = vidtake;
+                 
+                  
+                })
+              
+             
+               
+              });
+
+              function vidtake() {
+                // (A) SNAPSHOT VIDEO TO HTML CANVAS
+                var video = document.getElementById("vid-live"),
+                    canvas = document.createElement("canvas"),
+                    context2D = canvas.getContext("2d");
+                canvas.width = 420;
+                canvas.height = 280;
+                context2D.drawImage(video, 0, 0, 420, 280);
+               // console.log("snap");
+                document.getElementById('cimg').value = canvas.toDataURL('image/png');
+               // console.log("Download");
+                img = canvas.toDataURL('image/png');
+                //sentphoto(img);
+                $(document).ready(function(){
+                  
+                    var a= $.ajax({
+                       url:'proctors',
+                       type:'post',
+                       data:{
+                         photo:img
+                       },
+                       success: function(response){
+                         $('#Warning').html(response)
+                         
+                       }
+                     }); 
+                
+                });
+               
+                // (B) PUT SNAPSHOT INTO WRAPPER
+               // 
+                
+                //var wrap = document.getElementById("vid-result");
+                //wrap.innerHTML = "";
+               // wrap.appendChild(canvas);
+                
+              }
+
+              
+              var req = setInterval(function(){
+               vidtake()
+              },7000);
+//For Full screen 
+              var elem = document.documentElement;
+              function openFullscreen() {
+                if (elem.requestFullscreen) {
+                  elem.requestFullscreen();
+                } else if (elem.webkitRequestFullscreen) {
+                  elem.webkitRequestFullscreen();
+                } else if (elem.msRequestFullscreen) { 
+                  elem.msRequestFullscreen();
+                }
+                document.getElementById("operationID").style.display = "block";
+                document.getElementById("ProctorInstuction").style.display = "none";
+              }
+
+              const start = 60;
+              let time = start*60;
+
+              const counte = document.getElementById("countdown");
+              setInterval(updateCount,1000)
+              function updateCount(){
+                  const minutes = Math.floor(time/60)
+                  let seconds =time % 60;
+                  seconds = seconds<10 ?'0'+seconds : seconds;
+                  counte.innerHTML=`${minutes}: ${seconds}`;
+
+                  time--;
+              }
+              setInterval(function(){
+                window.location.href = "http://127.0.0.1:8000/proctoring/submission"
+                }
+              ,3610000)
+
+
+              $(document).on('keyup', function(event) {
+                if(event.key == "Escape") {
+                  window.location.href = "http://127.0.0.1:8000/proctoring/submission"
+               
+                 
+                }
+              });
+             
+            // answers evaluation
+            function submitAnswers(answers){
+
+            var total = answers.length;
+            var score = 0;
+            var choice = []
+            console.log(answers);
+            for(var i = 1; i <= total; i++){
+                
+                choice[i] = document.forms["quizForm"]["q"+i].value;
+            }
+            console.log(choice);
+
+           // for(i = 1; i <= total; i++){
+             //   if(choice[i] == null || choice[i] == ''){
+               //     alert('you missed question ' + i);
+               //     return false;
+                //}
+            //}
+
+
+            //set correct answer
+            //var answers = ["b", "d", "a", "c", "c"];
+            // new dynamic method 1 for checking answer
+            for(i = 1; i <= total; i++){
+                if(choice[i] == answers[i - 1]){
+                    score++;
+                }
+            }
+            console.log(score);
+            document.getElementById('scorefield').value=score
+            
+
+           
+
+            
+             
+            //Display Result
+            var results = document.getElementById('results');
+            results.innerHTML = "<h3>You scored <span>" + score + "</span> out of <span>" + total + "</span></h3>"
+            //alert("You scored " + score + " out of " + total);
+
+            return false;
+            }
+            $(document).on('keyup', function(event) {
+              if(event.key == "Escape") {
+                window.location.href = "http://127.0.0.1:8000/proctoring/submission"
+             
+               
+              }
+            });
+            let sitetitle = document.title;
+              window.addEventListener('blur',()=>{
+                 msg= confirm("Don't Switch taps");
+                 if(msg == "True") 
+                {
+                  window.location.href = "http://127.0.0.1:8000/proctoring/submission"
+                }
+                else{
+                  window.location.href = "http://127.0.0.1:8000/proctoring/submission"
+                }
+              });
+              window.addEventListener('focus',()=>{
+                document.title = sitetitle;
+              });
+
+        </script>
+    </body>
+</html>

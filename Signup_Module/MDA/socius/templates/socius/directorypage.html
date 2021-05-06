@@ -1,0 +1,366 @@
+
+{% load static %}
+{% static "images" as baseUrl%}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Directory Page</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.2/css/all.css" rel="stylesheet" />
+    <style>
+    	@import url('https://fonts.googleapis.com/css?family=Roboto');
+
+        body{
+          font-family: 'Roboto', sans-serif;
+        }
+        * {
+          margin: 0;
+          padding: 0;
+        }
+        i {
+          margin-right: 10px;
+        }
+        /*----------multi-level-accordian-menu------------*/
+        .navbar-logo{
+          padding: 15px;
+          color: #fff;
+        }
+        .navbar-mainbg{
+          background-color: #5161ce;
+          padding: 0px;
+        }
+        #navbarSupportedContent{
+          overflow: hidden;
+          position: relative;
+        }
+        #navbarSupportedContent ul{
+          padding: 0px;
+          margin: 0px;
+        }
+        #navbarSupportedContent ul li a i{
+          margin-right: 10px;
+        }
+        #navbarSupportedContent li {
+          list-style-type: none;
+          float: left;
+        }
+        #navbarSupportedContent ul li a{
+          color: rgba(255,255,255,0.5);
+            text-decoration: none;
+            font-size: 15px;
+            display: block;
+            padding: 20px 20px;
+            transition-duration:0.6s;
+          transition-timing-function: cubic-bezier(0.68, -0.55, 0.265, 1.55);
+            position: relative;
+        }
+        #navbarSupportedContent>ul>li.active>a{
+          color: #5161ce;
+          background-color: transparent;
+          transition: all 0.7s;
+        }
+        #navbarSupportedContent a:not(:only-child):after {
+          content: "\f105";
+          position: absolute;
+          right: 20px;
+          top: 10px;
+          font-size: 14px;
+          font-family: "Font Awesome 5 Free";
+          display: inline-block;
+          padding-right: 3px;
+          vertical-align: middle;
+          font-weight: 900;
+          transition: 0.5s;
+        }
+        #navbarSupportedContent .active>a:not(:only-child):after {
+          transform: rotate(90deg);
+        }
+        .hori-selector{
+          display:inline-block;
+          position:absolute;
+          height: 100%;
+          top: 0px;
+          left: 0px;
+          transition-duration:0.6s;
+          transition-timing-function: cubic-bezier(0.68, -0.55, 0.265, 1.55);
+          background-color: #fff;
+          border-top-left-radius: 15px;
+          border-top-right-radius: 15px;
+          margin-top: 10px;
+        }
+        .hori-selector .right,
+        .hori-selector .left{
+          position: absolute;
+          width: 25px;
+          height: 25px;
+          background-color: #fff;
+          bottom: 10px;
+        }
+        .hori-selector .right{
+          right: -25px;
+        }
+        .hori-selector .left{
+          left: -25px;
+        }
+        .hori-selector .right:before,
+        .hori-selector .left:before{
+          content: '';
+            position: absolute;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background-color: #5161ce;
+        }
+        .hori-selector .right:before{
+          bottom: 0;
+            right: -25px;
+        }
+        .hori-selector .left:before{
+          bottom: 0;
+            left: -25px;
+        }
+
+
+
+
+        @media (max-width: 991px){
+          #navbarSupportedContent ul li a{
+            padding: 12px 30px;
+          }
+          .hori-selector{
+            margin-top: 0px;
+            margin-left: 10px;
+            border-radius: 0;
+            border-top-left-radius: 25px;
+            border-bottom-left-radius: 25px;
+          }
+          .hori-selector .left,
+          .hori-selector .right{
+            right: 10px;
+          }
+          .hori-selector .left{
+            top: -25px;
+            left: auto;
+          }
+          .hori-selector .right{
+            bottom: -25px;
+          }
+          .hori-selector .left:before{
+            left: -25px;
+            top: -25px;
+          }
+          .hori-selector .right:before{
+            bottom: -25px;
+            left: -25px;
+          }
+        }
+        
+    </style>
+    
+</head>
+<body>
+  <nav class="navbar navbar-expand-lg navbar-mainbg">
+    <a class="navbar-brand navbar-logo" href="{% url 'loggedin' %}">Home</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+    <i class="fas fa-bars text-white"></i>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      
+        
+          <ul class="nav nav-tabs" class="navbar-nav ml-auto">
+              <div class="hori-selector"><div class="left"></div><div class="right"></div></div>
+              <li class="nav-item active">
+                  <a class="nav-link" data-target="#chatroom" data-toggle="tab" href=""><i class="fas fa-tachometer-alt"></i>ToDo </a>
+              </li>
+              <li class="nav-item">
+                  <a class="nav-link" data-target="#lists" data-toggle="tab" href=""><i class="far fa-address-book"></i>Members</a>
+              </li>
+              <!--<li class="nav-item ">
+                  <a class="nav-link" href="#"><i class="far fa-calendar-alt"></i>Calendar</a>
+              </li>-->
+              <li class="nav-item">
+                  <a class="nav-link" data-target="#documents" data-toggle="tab"  href=""><i class="far fa-copy"></i>Documents</a>
+              </li>
+          </ul>
+        
+      
+    </div>
+</nav>
+
+<!--Card Body HERE-->
+<div class="card-body">
+  <!--Table Content Start Here-->
+      <div class="tab-content py-4">
+          <!-- Discussion Form Section Starts Here-->
+          <div class="tab-pane" id="chatroom">
+              <div class="container">
+                Discussion Form Section will be displayed here!!!
+              </div>
+          </div>
+          <!-- Discussion Section Ends Here-->
+
+
+          <!--Member Listing Section Starts Here -->
+          <div class="tab-pane" id="lists">
+              <div class="container">
+                <main role="main" class="container">
+                  <div class="d-flex align-items-center p-3 my-3 text-white-50 bg-purple rounded shadow-sm">
+                    <img class="mr-3" src="{% static 'images/socis.jpg' %}" alt="" width="48" height="48"> 
+                    <div class="d-flex justify-content-between align-items-center w-100">
+                        {% if user != superuser %}
+                              <form action="remove" method="POST">{% csrf_token %}
+                                <input type="hidden" id="id" name="user_id" value="{{user1}}" ><br>
+                                <input type="hidden" id="id" name="directoryid" value="{{directoryid}}" ><br>
+                                <p><input type="submit" class="btn btn-primary custom-btn" value="Leave"></p>
+                              </form>
+                        {% endif %}
+                    
+                    
+                      <div class="lh-100">
+                        <h6 class="mb-0 text-white lh-100">Bootstrap</h6>
+                        <small>Since 2011</small>
+                      </div>
+                    </div>
+                  </div>
+                  
+                  <div class="my-3 p-3 bg-white rounded shadow-sm">
+                    <h6 class="border-bottom border-gray pb-2 mb-0">Super User</h6>
+                    <div class="media text-muted pt-3">
+                      <img class="mr-3" src="{{SuPic.url}}" alt="" width="48" height="48">
+                      <p class="media-body pb-3 mb-0 small lh-125 border-bottom border-gray">
+                        <strong class="d-block text-gray-dark">{{SuperUser}}</strong>
+                        
+                      </p>
+                    </div>
+                    
+                    <small class="d-block text-right mt-3">
+                      <a href="#">All updates</a>
+                    </small>
+                  </div>
+                  
+                  <div class="my-3 p-3 bg-white rounded shadow-sm">
+                    <h6 class="border-bottom border-gray pb-2 mb-0">Members</h6>
+                    {% for i in members %}
+                    <div class="media text-muted pt-3">
+                      {% for pic in lp %}
+                      {% for dest in pic %}
+                      <img class="mr-3" src="{{dest.image.url}}" alt="" width="48" height="48">
+                      {% endfor %}
+                      {% endfor %}
+                      <div class="media-body pb-3 mb-0 small lh-125 border-bottom border-gray">
+                        <div class="d-flex justify-content-between align-items-center w-100">
+                          <strong class="text-gray-dark">{{i.Name}}</strong>
+                             
+                          {% if user == superuser %}
+                          <form action="remove" method="POST">{% csrf_token %}
+                            <input type="hidden" id="id" name="user_id" value="{{i.user_id}}" ><br>
+                            <input type="hidden" id="id" name="directoryid" value="{{directoryid}}" ><br>
+                            <p><input type="submit" class="btn btn-primary custom-btn" value="Remove"></p>
+                          </form>
+                          {% endif %}
+                        </div>
+                        <p>{{i.Bio}}</p>
+                        <!--<span class="d-block">@{{i.Name}}</span>-->
+                      </div>
+                    </div>
+                    {% endfor %}
+                    
+                    <small class="d-block text-right mt-3">
+                      <a href="#">All suggestions</a>
+                    </small>
+                  </div>
+                </main>
+              </div>
+          </div>
+          <!--Member Listing Section Ends Here -->
+
+
+
+          <!--Documents Sharing Section Starts Here -->
+          <div class="tab-pane" id="documents">
+              <div class="container">   
+                {% if user == superuser %}
+                
+                  Select the documents/notes to share with your Friends/students!!!
+                  <br>
+                  <br>
+                  <form action="/notes" method="post" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    <input type="file" name="file" >  
+                    <input type="hidden" name="directoryid" value="{{directoryid}}">
+                    <input type="submit"  onclick="JSalert()" name="Upload" value="upload">
+                      
+                  </form>
+                  
+                  <br>
+                {% endif %}
+                  <h2>Recently uploaded Documents</h2>
+                  <br>
+                  {% for note in notes %}
+                    {{note.files}}<a href="media/{{note.files}}"> <input type="button"name="download" value="download"></a><br>
+                    <br>
+                  {% endfor %}
+                  
+
+                  <script type="text/javascript">
+                  function JSalert(){
+                    swal("Congrats!", ", Your account is created!", "success");
+                  }
+                  </script>
+              </div>
+          </div>
+          <!--Documents Sharing Section Ends Here -->
+
+      </div> 
+  <!--Table content end here-->
+  </div>
+
+
+     <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+    <script>
+    	function test(){
+  var tabsNewAnim = $('#navbarSupportedContent');
+  var selectorNewAnim = $('#navbarSupportedContent').find('li').length;
+  var activeItemNewAnim = tabsNewAnim.find('.active');
+  var activeWidthNewAnimHeight = activeItemNewAnim.innerHeight();
+  var activeWidthNewAnimWidth = activeItemNewAnim.innerWidth();
+  var itemPosNewAnimTop = activeItemNewAnim.position();
+  var itemPosNewAnimLeft = activeItemNewAnim.position();
+  $(".hori-selector").css({
+    "top":itemPosNewAnimTop.top + "px", 
+    "left":itemPosNewAnimLeft.left + "px",
+    "height": activeWidthNewAnimHeight + "px",
+    "width": activeWidthNewAnimWidth + "px"
+  });
+  $("#navbarSupportedContent").on("click","li",function(e){
+    $('#navbarSupportedContent ul li').removeClass("active");
+    $(this).addClass('active');
+    var activeWidthNewAnimHeight = $(this).innerHeight();
+    var activeWidthNewAnimWidth = $(this).innerWidth();
+    var itemPosNewAnimTop = $(this).position();
+    var itemPosNewAnimLeft = $(this).position();
+    $(".hori-selector").css({
+      "top":itemPosNewAnimTop.top + "px", 
+      "left":itemPosNewAnimLeft.left + "px",
+      "height": activeWidthNewAnimHeight + "px",
+      "width": activeWidthNewAnimWidth + "px"
+    });
+  });
+}
+$(document).ready(function(){
+  setTimeout(function(){ test(); });
+});
+$(window).on('resize', function(){
+  setTimeout(function(){ test(); }, 500);
+});
+$(".navbar-toggler").click(function(){
+  setTimeout(function(){ test(); });
+});
+
+</script>
+</body>
+</html>
+
